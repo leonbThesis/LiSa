@@ -160,7 +160,7 @@ class SubmitPage extends Component {
               className="upload-form-exectime-input"
               min={10}
               max={1000}
-              defaultValue={20}
+              defaultValue={15}
               onChange={this.handleInputExecutionTime}
             />
           </div>
