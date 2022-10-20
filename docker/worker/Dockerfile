@@ -41,7 +41,7 @@ RUN apt-get install -y \
     ninja-build
 
 # get modified QEMU version
-RUN git clone -b master --single-branch https://github.com/leonbThesis/qemu
+RUN git clone -b SLV --single-branch https://github.com/leonbThesis/qemu
 
 # manually build QEMU
 WORKDIR qemu
