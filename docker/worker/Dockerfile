@@ -51,6 +51,7 @@ RUN mkdir build
 WORKDIR build
 
 RUN ../configure --target-list=x86_64-softmmu,mips-softmmu,i386-softmmu,arm-softmmu,aarch64-softmmu \
+    && make -j4 \
     && mv qemu-system-x86_64 /usr/bin \
     && mv qemu-system-mips /usr/bin \ 
     && mv qemu-system-i386 /usr/bin \
