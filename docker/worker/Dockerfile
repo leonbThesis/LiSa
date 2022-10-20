@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && useradd -m lisa \
     && echo "Downloading LiSa Linux images ..." \
     # Modify linux-images path
-    && git clone -b SLV --single-branch https://github.com/leonbThesis/linux-images \
+    && git clone -b HLV --single-branch https://github.com/leonbThesis/linux-images \
     && mv linux-images /home/lisa/images
 
 COPY --chown=lisa:lisa ./data /home/lisa/data
@@ -41,7 +41,7 @@ RUN apt-get install -y \
     ninja-build
 
 # get modified QEMU version
-RUN git clone -b master --single-branch https://github.com/leonbThesis/qemu
+RUN git clone -b HLV --single-branch https://github.com/leonbThesis/qemu
 
 # manually build QEMU
 WORKDIR qemu
