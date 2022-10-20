@@ -9,8 +9,9 @@ class SubmitPage extends Component {
 
     this.state = {
       file: "",
+      files: [],
       type: "",
-      exectime: 20,
+      exectime: 15,
       status: "",
       uploading: false,
       task_id: ""
@@ -25,6 +26,43 @@ class SubmitPage extends Component {
 
     let data = new FormData();
 
+    if (this.state.type === "massBinary") {
+      
+      
+      for(var p=0; p<this.state.files.length; p++){
+        let data = new FormData();
+        data.append("file", this.state.files[p]);
+        data.append("exec_time", this.state.exectime);
+      
+        fetch("http://" + process.env.REACT_APP_HOST + "/api/tasks/create/file", {
+          method: "POST",
+          body: data
+        })
+          .then(res => {
+            let status = "";
+            if (res.ok) {
+              status = "success";
+            } else {
+              status = "error";
+            }
+            this.setState({
+              status: status,
+              file: ""
+            });
+            return res.json();
+          })
+          .then(obj => {
+            this.setState({
+              task_id: obj.task_id
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+      
+    }
+    
     if (this.state.type === "binary") {
       data.append("file", this.state.file);
       data.append("exec_time", this.state.exectime);
@@ -88,9 +126,17 @@ class SubmitPage extends Component {
   };
 
   handleInput = event => {
-    this.setState({
-      file: event.target.files[0]
-    });
+    if(this.state.type === "massBinary"){
+      
+      this.setState({
+        files: event.target.files
+      });
+      
+    }else{
+      this.setState({
+        file: event.target.files[0]
+      });
+    }
   };
 
   handleSelectRadio = event => {
@@ -106,14 +152,10 @@ class SubmitPage extends Component {
   };
 
   render() {
-    const { file, type, status, uploading, task_id } = this.state;
+    const { file, files, type, status, uploading, task_id } = this.state;
 
-    let disabled = true;
+    let disabled = false;
     let alert;
-
-    if (file !== "" && type !== "") {
-      disabled = false;
-    }
 
     if (status === "success") {
       alert = (
@@ -182,6 +224,7 @@ class SubmitPage extends Component {
                 </p>
                 <div className="upload-form-input">
                   <Radio.Group onChange={this.handleSelectRadio}>
+                    <Radio.Button value="massBinary">mass binary</Radio.Button>
                     <Radio.Button value="binary">binary</Radio.Button>
                     <Radio.Button value="pcap">pcap</Radio.Button>
                   </Radio.Group>
@@ -199,6 +242,7 @@ class SubmitPage extends Component {
                       type="file"
                       className="hidden"
                       onChange={this.handleInput}
+                      multiple
                     />
                     <span className="upload-label-text">Select file</span>
                   </label>
