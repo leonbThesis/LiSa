@@ -9,8 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     patch \
     git \
-    qemu \
-    qemu-system \
+    # remove QEMU from apt-get install for manual install
     openvpn \
     binutils \
     iprange \
@@ -21,8 +20,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && radare2/sys/install.sh \
     && useradd -m lisa \
     && echo "Downloading LiSa Linux images ..." \
-    && wget https://github.com/danieluhricek/linux-images/archive/v1.0.1.tar.gz -q -O - | tar xz -C /home/lisa \
-    && mv /home/lisa/linux-images-1.0.1 /home/lisa/images
+    # Modify linux-images path
+    && git clone -b SLV --single-branch https://github.com/leonbThesis/linux-images \
+    && mv linux-images /home/lisa/images
 
 COPY --chown=lisa:lisa ./data /home/lisa/data
 COPY --chown=lisa:lisa ./docker /home/lisa/docker
@@ -30,6 +30,32 @@ COPY --chown=lisa:lisa ./lisa /home/lisa/lisa
 COPY --chown=lisa:lisa ./requirements.txt /home/lisa/requirements.txt
 
 ENV PYTHONPATH /home/lisa
+
+# get additional packages for manual QEMU install (https://wiki.qemu.org/Hosts/Linux)
+RUN apt-get install -y \
+    libglib2.0-dev \
+    libfdt-dev \
+    libpixman-1-dev \
+    zlib1g-dev \
+    bzip2 \
+    ninja-build
+
+# get modified QEMU version
+RUN git clone -b master --single-branch https://github.com/leonbThesis/qemu
+
+# manually build QEMU
+WORKDIR qemu
+
+RUN mkdir build
+
+WORKDIR build
+
+RUN ../configure --target-list=x86_64-softmmu,mips-softmmu,i386-softmmu,arm-softmmu,aarch64-softmmu \
+    && mv qemu-system-x86_64 /usr/bin \
+    && mv qemu-system-mips /usr/bin \ 
+    && mv qemu-system-i386 /usr/bin \
+    && mv qemu-system-arm /usr/bin \
+    && mv qemu-system-aarch64 /usr/bin
 
 WORKDIR /home/lisa
 
