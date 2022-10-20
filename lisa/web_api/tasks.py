@@ -79,7 +79,7 @@ def full_analysis(self, file_path, pretty=False, exec_time=20):
     master.load_analyzers()
     master.run()
 
-    output_file = f'{data_dir}/report.json'
+    output_file = f'{data_dir}/{self.request.id}.json'
 
     save_output(master.output, output_file, pretty)
 
