@@ -211,7 +211,7 @@ def task_file_create():
             res = ErrorAPIResponse(2022).to_dict()
             return jsonify(res), 400
 
-    task_id = uuid()
+    task_id = file.filename+"-"+uuid()
 
     # prepare directory and save file
     os.mkdir(f'{storage_path}/{task_id}')
@@ -238,7 +238,7 @@ def get_report(id):
         res = ErrorAPIResponse(1000).to_dict()
         return jsonify(res), 404
 
-    return send_file(f'{storage_path}/{id}/report.json')
+    return send_file(f'{storage_path}/{id}/{id}.json')
 
 
 @app.route('/api/pcap/<id>', methods=['GET'])
@@ -256,7 +256,7 @@ def download_pcap(id):
 @app.route('/api/json/<id>', methods=['GET'])
 def download_json(id):
     """Download json report (serve file)."""
-    json_file = f'{storage_path}/{id}/report.json'
+    json_file = f'{storage_path}/{id}/{id}.json'
 
     if not os.path.isfile(json_file):
         res = ErrorAPIResponse(1004).to_dict()
