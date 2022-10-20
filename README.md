@@ -1,6 +1,6 @@
 ## About
 
-**This project is an adaption and extension of [LiSa by danieluhricek](https://github.com/danieluhricek/LiSa)
+This project is an adaption and extension of [LiSa by danieluhricek](https://github.com/danieluhricek/LiSa)
 
 
 ## Installation
