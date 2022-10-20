@@ -15,13 +15,11 @@ log = logging.getLogger()
 
 class StaticAnalyzer(AbstractSubAnalyzer):
     """Provides static analysis.
-
     :param file: Analyzed file's object.
     """
 
     def run_analysis(self):
         """Main analysis method.
-
         :returns: Dictionary containing analysis results.
         """
         log.info('Static Analysis started.')
@@ -59,8 +57,8 @@ class StaticAnalyzer(AbstractSubAnalyzer):
             'language': info['bin']['lang'],
             'stripped': info['bin']['stripped'],
             'relocations': info['bin']['relocs'],
-            'min_opsize': info['bin']['minopsz'],
-            'max_opsize': info['bin']['maxopsz'],
+            'min_opsize': info['core']['minopsz'],
+            'max_opsize': info['core']['maxopsz'],
             'entry_point': entry_point[0]['vaddr']
         }
 
@@ -82,7 +80,6 @@ class StaticAnalyzer(AbstractSubAnalyzer):
     def _load_strings(self):
         """Returns list of printable strings contained in binary.
         Uses standard linux tool `strings`.
-
         :param file_path: Path to file.
         """
         p = subprocess.Popen(['strings', self._file.path],
