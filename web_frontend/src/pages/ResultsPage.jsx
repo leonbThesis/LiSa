@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Layout, Table } from "antd";
+import { Button, Layout, Table } from "antd";
 
 const { Content, Header } = Layout;
 
@@ -52,6 +52,15 @@ class ResultsPage extends Component {
         console.log(error);
       });
   };
+  
+  handleInput = () => {
+    for(var p=0; p<this.state.results.length; p++){
+      window.open(
+        "http://" + process.env.REACT_APP_HOST + "/api/json/" + this.state.results[p].task_id
+      );
+    }
+  };
+
 
   render() {
     let pagination = { pageSize: 20, size: "small" };
@@ -63,6 +72,18 @@ class ResultsPage extends Component {
         </Header>
         <Content className="page-content">
           <div className="inner-page-content">
+            <div className="upload-form-row">
+              <div className="upload-form-input">
+                <Button
+                  type="primary"
+                  icon="download"
+                  onClick={this.handleInput}
+                  className="upload-submit"
+                >
+                  Download All
+                </Button>
+              </div>
+            </div>
             <Table
               columns={columnsResults}
               dataSource={this.state.results}
