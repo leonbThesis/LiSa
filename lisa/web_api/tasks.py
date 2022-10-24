@@ -76,6 +76,7 @@ def full_analysis(self, file_path, pretty=False, exec_time=20):
 
     # run top level and submodules
     master = Master(file_path, data_dir, exec_time)
+    master.add_vm_indicators()
     master.load_analyzers()
     master.run()
 
