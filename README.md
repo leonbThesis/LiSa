@@ -5,7 +5,7 @@ This project is an adaption and extension of [LiSa by danieluhricek](https://git
 
 ## Installation
 
-**Use a virtual [Linux Ubuntu Server 20.4](https://ubuntu.com/download/server#downloads) machine**
+**Use a virtual [Linux Ubuntu Server 20.04](https://ubuntu.com/download/server#downloads) machine**
 
 
 
